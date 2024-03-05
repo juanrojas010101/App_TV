@@ -14,6 +14,8 @@ const TelevisorComponent: React.FC = () => {
   const [tipoFruta, setTipoFruta] = useState<string>('');
   const [kilosProcesadasHora, setKilosProcesadasHora] = useState<number>(0);
   const [kilosExportacionHora, setKilosExportacionHora] = useState<number>(0);
+  const [procesadasWidth, setProcesadasWidth] = useState<number>(0);
+  const [exportacionWidth, setExportacionWidth] = useState<number>(0);
 
   const handleAppStateChange = (nextAppState: AppStateStatus) => {
     setAppState(nextAppState);
@@ -145,8 +147,8 @@ const TelevisorComponent: React.FC = () => {
   const porcentajeExportacion = (kilosExportacionHora / maxKilosPorHora) * 100;
 
   // Determinar el color de las barras de progreso
-  const barraProcesadasColor = porcentajeProcesadas > 70 ? 'green' : 'red';
-  const barraExportacionColor = porcentajeExportacion > 70 ? 'green' : 'red';
+  const barraProcesadasColor = porcentajeProcesadas > 70 ? 'green' : '#FF0000';
+  const barraExportacionColor = porcentajeExportacion > 70 ? 'green' : '#FF0000';
 
   return (
     <ImageBackground source={require('./img/img1.jpg')} style={styles.backgroundImage}>
@@ -161,33 +163,32 @@ const TelevisorComponent: React.FC = () => {
             {tipoFruta === 'Limon' && <Image source={require('./img/limon.jpg')} style={styles.frutaImage} />}
           </Animatable.View>
         </Animatable.View>
+        
         <Animatable.View animation="fadeIn" duration={1000} style={styles.cardContainer}>
           <Animatable.View animation="fadeIn" duration={1000} style={[styles.card, {backgroundColor: '#000'}]}>
             <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>ENF:</Text> {televisorData?.enf}</Text>
             <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Nombre:</Text> {televisorData?.nombrePredio}</Text>
-            <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos:</Text> {predioData?.kilos}</Text>
-            <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos Vaciados:</Text> {predioData?.kilosVaciados}</Text>
-            <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos Procesados: </Text> {kilosProcesadasHora}</Text>
+            <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos Procesados:</Text> {kilosProcesadasHora}</Text>
             <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos Exportación: </Text>{kilosExportacionHora}</Text>
           </Animatable.View>
           <Animatable.View animation="fadeIn" duration={1000} style={[styles.card, {backgroundColor: '#000'}]}>
             <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Rendimiento:</Text> {rendimiento}</Text>
             <View style={[styles.progressBarContainer, { backgroundColor: '#f2f2f2' }]}>
-              <View style={[styles.progressBar, { width: `${porcentaje}%`, backgroundColor: barraColor }]}>
+              <Animatable.View animation="slideInLeft" duration={1500} style={[styles.progressBar, { width: `${porcentaje}%`, backgroundColor: barraColor }]}>
                 <Text style={styles.progressBarText}>{`${porcentaje}%`}</Text>
-              </View>
+              </Animatable.View>
             </View>
             <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos procesados Hora:</Text> {kilosProcesadasHora}</Text>
             <View style={[styles.progressBarContainer, { backgroundColor: '#f2f2f2' }]}>
-              <View style={[styles.progressBar, { width: `${porcentajeProcesadas}%`, backgroundColor: barraProcesadasColor }]}>
-                <Text style={styles.progressBarText}>{kilosProcesadasHora} kg</Text>
-              </View>
+              <Animatable.View animation="slideInLeft" duration={1500} style={[styles.progressBar, { width: `${porcentajeProcesadas}%`, backgroundColor: barraProcesadasColor }]}>
+                <Text style={styles.progressBarText}>{`${kilosProcesadasHora} kg`}</Text>
+              </Animatable.View>
             </View>
             <Text style={[styles.cardText, {color: '#fff'}]}><Text style={styles.bold}>Kilos Exportación Hora:</Text> {kilosExportacionHora}</Text>
             <View style={[styles.progressBarContainer, { backgroundColor: '#f2f2f2' }]}>
-              <View style={[styles.progressBar, { width: `${porcentajeExportacion}%`, backgroundColor: barraExportacionColor }]}>
-                <Text style={styles.progressBarText}>{kilosExportacionHora} kg</Text>
-              </View>
+              <Animatable.View animation="slideInLeft" duration={1500} style={[styles.progressBar, { width: `${porcentajeExportacion}%`, backgroundColor: barraExportacionColor }]}>
+                <Text style={styles.progressBarText}>{`${kilosExportacionHora} kg`}</Text>
+              </Animatable.View>
             </View>
           </Animatable.View>
         </Animatable.View>
@@ -195,38 +196,39 @@ const TelevisorComponent: React.FC = () => {
     </ImageBackground>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center', // Alineación horizontal centrada
-    marginBottom: 20,
+    marginBottom: 15,
   },
   timerContainer: {
     backgroundColor: '#000',
     padding: 15,
     borderRadius: 20,
-    width: 150, // Ancho del cronómetro y la nueva tarjeta
+    marginTop: '2%',
+    width: 200, // Ancho del cronómetro y la nueva tarjeta
     alignItems: 'center',
   },
   spacer: {
     width: 20, // Espacio entre el cronómetro y la nueva tarjeta
   },
   timerText: {
-    fontSize: 30,
+    fontSize: 50, // Aumentar tamaño del texto del cronómetro
     color: '#fff',
     fontWeight: 'bold',
   },
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
+    marginLeft: '1.5%',
+    width: '97%',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -238,9 +240,9 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 20,
-    padding: 30,
-    marginBottom: 30,
-    width: '48%', // Ancho original de las tarjetas izquierda y derecha
+    padding: 36,
+    marginBottom: 25,
+    width: '49%', // Ancho original de las tarjetas izquierda y derecha
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -252,11 +254,12 @@ const styles = StyleSheet.create({
   },
   newCard: {
     backgroundColor: '#fff',
-    borderRadius: 10, // Reducir el radio del borde para hacerla más pequeña
-    padding: 5, // Reducir el espacio interno para hacerla más pequeña
-    marginBottom: 5, // Reducir el margen inferior para hacerla más pequeña
-    width: 50, // Ancho reducido de la tarjeta
-    height: 70, // Alto reducido de la tarjeta
+    borderRadius: 20, 
+    padding: 10, 
+    marginBottom: 0, 
+    marginTop: '2%',
+    width: 100,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -269,7 +272,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cardText: {
-    fontSize: 25,
+    fontSize: 32,
     marginBottom: 20,
   },
   bold: {
@@ -296,7 +299,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   backgroundImage: {
-    flex: 1,
+    flex: 2,
     resizeMode: 'cover',
     justifyContent: 'center',
   },
@@ -306,5 +309,4 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
-
 export default TelevisorComponent;
